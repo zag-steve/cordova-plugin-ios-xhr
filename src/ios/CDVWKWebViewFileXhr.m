@@ -132,7 +132,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     // note:  settings translates all preferences to lower case
     value = [self.commandDelegate.settings cdvwkStringForKey:@"allowuntrustedcerts"];
-    if (value != nil && [value isEqualToString:@"true" options:NSCaseInsensitiveSearch] == NSOrderedSame) {
+    if (value != nil && [value isEqualToString:@"true"]) {
         _allowsInsecureLoads = YES;
         NSLog(@"WARNING: NativeXHR is allowing untrusted certificates due to preference AllowUntrustedCerts=true");
     }
