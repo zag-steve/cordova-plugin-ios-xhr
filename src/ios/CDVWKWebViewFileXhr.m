@@ -72,25 +72,23 @@ NS_ASSUME_NONNULL_BEGIN
     // Sync all cookies from the WKHTTPCookieStore to the NSHTTPCookieStorage..
     // .. to solve make cookies set in the main or IAB webview available for proxy requests
     @try {
-    dispatch_async(dispatch_get_main_queue(), ^{    // WKWebsiteDataStore must be used from main thread only
-    WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
-    WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
-    
-    [cookieStore getAllCookies:^(NSArray* cookies) {
-        NSHTTPCookie* cookie;
-        for(cookie in cookies) {
-            NSMutableDictionary* cookieDict = [cookie.properties mutableCopy];
-            [cookieDict removeObjectForKey:NSHTTPCookieDiscard]; // Remove the discard flag. If it is set (even to false), the expires date will NOT be kept.
-            NSHTTPCookie* newCookie = [NSHTTPCookie cookieWithProperties:cookieDict];
-            [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:newCookie];
+        dispatch_async(dispatch_get_main_queue(), ^{    // WKWebsiteDataStore must be used from main thread only
+            WKWebsiteDataStore* dataStore = [WKWebsiteDataStore defaultDataStore];
+            WKHTTPCookieStore* cookieStore = dataStore.httpCookieStore;
             
-        }
-    }];
-    });
+            [cookieStore getAllCookies:^(NSArray* cookies) {
+                NSHTTPCookie* cookie;
+                for(cookie in cookies) {
+                    NSMutableDictionary* cookieDict = [cookie.properties mutableCopy];
+                    [cookieDict removeObjectForKey:NSHTTPCookieDiscard]; // Remove the discard flag. If it is set (even to false), the expires date will NOT be kept.
+                    NSHTTPCookie* newCookie = [NSHTTPCookie cookieWithProperties:cookieDict];
+                    [[NSHTTPCookieStorage sharedHTTPCookieStorage] setCookie:newCookie];
+                    
+                }
+            }];
+        });
+    } @catch (NSException *exception) {
     }
-    @catch (NSException *exception) {
-    }
- };
 };
 
 -(void) pluginInitialize {
