@@ -419,7 +419,7 @@
   self.fetch = function (input, init) {
 
     // Allow native webview to access blobs created in the webview.
-    if (request.url.startsWith("blob:file://")) {
+    if (input.startsWith("blob:file://")) {
       return window._webViewFetch(input);
     }
 
