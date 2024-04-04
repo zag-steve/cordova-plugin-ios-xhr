@@ -1,7 +1,6 @@
 'use strict';
 
-(function ()
-{
-  var _fetch = window.fetch;
+(function () {
+  window.webViewFetch = window.fetch;
   window.fetch = undefined;
 })();
